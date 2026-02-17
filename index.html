@@ -3,385 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NANDO THUMBU · SOLAR PORTFOLIO</title>
+    <title>NANDO THUMBU · 3D SOLAR PORTFOLIO</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Three.js library -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+            }
+        }
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
+        #info-panel { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            z-index: 100; 
+            pointer-events: none; 
         }
-
-        body {
-            background: radial-gradient(circle at 30% 40%, #0a1025, #010205);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #f0ecdb;
-            padding: 1rem;
-        }
-
-        /* starfield animation */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48Y2lyY2xlIGN4PSI2MCIgY3k9IjcwIiByPSIxLjIiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSIxNTAiIGN5PSIyMjAiIHI9IjEuNyIgZmlsbD0iI2ZmZmZmZiIvPjxjaXJjbGUgY3g9IjI4MCIgY3k9IjUwIiByPSIxLjgiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSIzMjAiIHI9IjEiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=') repeat;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.5;
-            animation: drift 200s linear infinite;
-        }
-        @keyframes drift {
-            0% { transform: translateY(0) translateX(0); }
-            100% { transform: translateY(-400px) translateX(150px); }
-        }
-
-        .wrapper {
-            max-width: 1500px;
-            width: 100%;
-            position: relative;
-            z-index: 5;
-        }
-
-        /* header with full name */
-        .name-header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(8px);
-            border-radius: 100px 20px 100px 20px;
-            padding: 1.5rem 2rem;
-            border: 1px solid #c9a55c;
-            display: inline-block;
-            width: auto;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .name-header h1 {
-            font-size: 3.8rem;
-            font-weight: 350;
-            background: linear-gradient(135deg, #feda85, #f3b377, #d6b4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 4px;
-            text-shadow: 0 0 20px #ffb347;
-        }
-        .name-header p {
-            font-size: 1.3rem;
-            color: #d4cbad;
-            letter-spacing: 3px;
-        }
-
-        /* solar system container */
-        .solar-system {
-            position: relative;
-            width: 100%;
-            min-height: 950px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 1rem 0 2rem;
-        }
-
-        /* central sun = name + title (no work) */
-        .sun {
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            background: radial-gradient(circle at 30% 30%, #fee186, #ea7e2e, #b9520c);
-            border-radius: 50%;
-            box-shadow: 0 0 100px 40px #ffa94b, 0 0 210px 80px #ff7d2a;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 4px solid #ffcf86;
-            z-index: 50;
-            color: #201e12;
-            font-weight: bold;
-            padding: 0 10px;
-            text-align: center;
-            animation: glow 4s infinite alternate;
-        }
-        .sun i {
-            font-size: 4rem;
-            color: #fff3cf;
-            filter: drop-shadow(0 0 8px black);
-        }
-        .sun .full-name {
-            background: rgba(0,0,0,0.45);
-            backdrop-filter: blur(4px);
-            padding: 0.4rem 1.2rem;
-            border-radius: 40px;
-            color: #ffefcb;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-top: 8px;
-            border: 1px solid #f0b56c;
-        }
-        @keyframes glow {
-            0% { box-shadow: 0 0 90px 30px #fea53b, 0 0 170px 60px #fc7a1e; }
-            100% { box-shadow: 0 0 150px 55px #ffc97a, 0 0 260px 100px #ffaa33; }
-        }
-
-        /* orbit rings (visual only) */
-        .ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid rgba(190, 155, 90, 0.3);
-            border-radius: 50%;
-            width: var(--d);
-            height: var(--d);
-            box-shadow: 0 0 0 1px rgba(210, 175, 100, 0.2);
-            pointer-events: none;
-        }
-
-        /* rotating orbit */
-        .orbit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: var(--orbit-w);
-            height: var(--orbit-w);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: rotateOrbit var(--period) linear infinite;
-            pointer-events: none;
-        }
-
-        .planet {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: var(--p-size);
-            height: var(--p-size);
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, var(--grad1), var(--grad2));
-            box-shadow: 0 0 25px 6px rgba(230, 200, 120, 0.7), 0 0 0 2px rgba(255, 215, 120, 0.5) inset;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-shadow: 0 2px 6px black;
-            padding: 0 2px;
-            border: 2px solid #e7b75e;
-            transition: 0.2s;
+        #github-link { 
+            position: absolute; 
+            bottom: 20px; 
+            right: 20px; 
+            z-index: 100; 
             pointer-events: auto;
-            line-height: 1.2;
-            text-align: center;
-            word-break: break-word;
-            backdrop-filter: blur(2px);
         }
-
-        .planet:hover {
-            transform: translate(-50%, -50%) scale(1.3);
-            box-shadow: 0 0 55px 18px #ffeec0;
-            border: 2px solid #fff2bb;
-            z-index: 400;
+        .planet-label { 
+            position: absolute; 
+            background: rgba(0,0,0,0.85); 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 30px; 
+            font-size: 14px; 
+            font-weight: 500;
+            pointer-events: auto; 
+            transform: translate(-50%, -50%); 
+            border: 1px solid #fbbf24; 
+            white-space: nowrap; 
+            backdrop-filter: blur(4px); 
+            z-index: 200;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-
-        .orbit:has(.planet:hover) {
-            animation-play-state: paused;
+        .planet-label:hover {
+            background: #fbbf24;
+            color: black;
+            transform: translate(-50%, -50%) scale(1.1);
+            border-color: white;
         }
-
-        @keyframes rotateOrbit {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        .planet-label i {
+            margin-right: 6px;
+            color: #fbbf24;
         }
-
-        .project-tag {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0b1022ee;
-            backdrop-filter: blur(4px);
-            white-space: nowrap;
-            font-size: 0.55rem;
-            padding: 3px 10px;
-            border-radius: 40px;
-            color: #ffda94;
-            border: 1px solid #b99450;
-            opacity: 0.95;
-            pointer-events: none;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
+        .planet-label:hover i {
+            color: black;
         }
-
-        /* minimal cert strip (no work experience) */
-        .certs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-            color: #cfc69b;
+        /* Override CSS2DRenderer pointer events */
+        .css2d-object {
+            pointer-events: none !important;
         }
-        .certs span {
-            background: #151f2e;
-            padding: 0.4rem 1.5rem;
-            border-radius: 60px;
-            border: 1px solid #9e884b;
-            font-size: 0.9rem;
-        }
-
-        /* responsive */
-        @media (max-width: 1000px) {
-            .solar-system { transform: scale(0.8); }
-            .name-header h1 { font-size: 2.8rem; }
-        }
-        @media (max-width: 700px) {
-            .solar-system { transform: scale(0.65); }
+        .css2d-object div {
+            pointer-events: auto !important;
         }
     </style>
 </head>
-<body>
-<div class="stars"></div>
-<div class="wrapper">
+<body class="bg-black text-white">
 
-    <!-- NAME + SURNAME (prominent) - no work details -->
-    <div class="name-header">
-        <h1>NANDO THUMBU</h1>
-        <p><i class="fas fa-code"></i>  developer · cloud · ai  <i class="fas fa-cloud-sun"></i></p>
-    </div>
-
-    <!-- SOLAR SYSTEM (planets = all your github projects) -->
-    <div class="solar-system">
-        <!-- decorative rings -->
-        <div class="ring" style="--d:210px;"></div>
-        <div class="ring" style="--d:350px;"></div>
-        <div class="ring" style="--d:490px;"></div>
-        <div class="ring" style="--d:630px;"></div>
-        <div class="ring" style="--d:770px;"></div>
-        <div class="ring" style="--d:890px;"></div>
-
-        <!-- SUN with name (central) -->
-        <div class="sun">
-            <i class="fas fa-user-astronaut"></i>
-            <span class="full-name">N. THUMBU</span>
-        </div>
-
-        <!-- ===== PROJECT PLANETS (each linked to github) ===== -->
-        <!-- inner belt -->
-        <div class="orbit" style="--orbit-w:210px; --period:12s;">
-            <a href="https://github.com/Nator26-NT/Gov_app" target="_blank" class="planet" style="--p-size:46px; --grad1:#79a3c2; --grad2:#163d60;">
-                Gov_app <span class="project-tag"><i class="fab fa-html5"></i> HTML</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:210px; --period:14s;">
-            <a href="https://github.com/Nator26-NT/Signal-Gen" target="_blank" class="planet" style="--p-size:44px; --grad1:#c49764; --grad2:#79461f;">
-                Signal‑Gen <span class="project-tag"><i class="fab fa-python"></i> Python</span>
-            </a>
-        </div>
-
-        <!-- 350px orbit -->
-        <div class="orbit" style="--orbit-w:350px; --period:19s;">
-            <a href="https://github.com/Nator26-NT/Gold-Scalping-AI-Pro" target="_blank" class="planet" style="--p-size:62px; --grad1:#dbb277; --grad2:#9f601f;">
-                Gold‑Scalping <span class="project-tag">AI · Python</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:350px; --period:21s;">
-            <a href="https://github.com/Nator26-NT/ForZarAi" target="_blank" class="planet" style="--p-size:64px; --grad1:#9fa9c9; --grad2:#2c3a5e;">
-                ForZarAi <span class="project-tag"><i class="fas fa-brain"></i> LLM</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:350px; --period:23s;">
-            <a href="https://github.com/Nator26-NT/Forex-trades_AI-tool" target="_blank" class="planet" style="--p-size:60px; --grad1:#ba987a; --grad2:#6d4029;">
-                Forex AI tool <span class="project-tag">V3 · Python</span>
-            </a>
-        </div>
-
-        <!-- 490px orbit -->
-        <div class="orbit" style="--orbit-w:490px; --period:27s;">
-            <a href="https://github.com/Nator26-NT/African-Football-Predictor-Pro-2025" target="_blank" class="planet" style="--p-size:70px; --grad1:#a2aa7f; --grad2:#3d6130;">
-                Football predictor <span class="project-tag">2025 · ML</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:490px; --period:29s;">
-            <a href="https://github.com/Nator26-NT/IBM_Consulting_Page" target="_blank" class="planet" style="--p-size:66px; --grad1:#9f8d78; --grad2:#5d432b;">
-                IBM Consulting <span class="project-tag">HTML · page</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:490px; --period:31s;">
-            <a href="https://github.com/Nator26-NT/Ubuntu_Code_App" target="_blank" class="planet" style="--p-size:80px; --grad1:#b9ab86; --grad2:#5a4e2a;">
-                Ubuntu Code <span class="project-tag">Python · i18n</span>
-            </a>
-        </div>
-
-        <!-- 630px orbit -->
-        <div class="orbit" style="--orbit-w:630px; --period:35s;">
-            <a href="https://github.com/Nator26-NT/Eskom_VS_Economy" target="_blank" class="planet" style="--p-size:64px; --grad1:#7e9b9c; --grad2:#1f5258;">
-                Eskom vs Economy <span class="project-tag">Python</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:630px; --period:37s;">
-            <a href="https://github.com/Nator26-NT/SpaceX-Falcon9-First-Stage-Landing-Prediction" target="_blank" class="planet" style="--p-size:70px; --grad1:#bd8f68; --grad2:#794520;">
-                SpaceX‑Falcon9 <span class="project-tag">Jupyter</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:630px; --period:39s;">
-            <a href="https://github.com/Nator26-NT/Face_Detector" target="_blank" class="planet" style="--p-size:58px; --grad1:#ac8b78; --grad2:#613e27;">
-                Face Detector <span class="project-tag">Python · CV</span>
-            </a>
-        </div>
-
-        <!-- 770px orbit -->
-        <div class="orbit" style="--orbit-w:770px; --period:44s;">
-            <a href="https://github.com/Nator26-NT/headsoccer" target="_blank" class="planet" style="--p-size:64px; --grad1:#9fb18b; --grad2:#38612f;">
-                headsoccer <span class="project-tag">Python · game</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:770px; --period:46s;">
-            <a href="https://github.com/Nator26-NT/Task_Manager" target="_blank" class="planet" style="--p-size:60px; --grad1:#8b9ca9; --grad2:#27465b;">
-                Task Manager <span class="project-tag">JavaScript</span>
-            </a>
-        </div>
-        <div class="orbit" style="--orbit-w:770px; --period:48s;">
-            <a href="https://github.com/Nator26-NT/KundiZA_Hub" target="_blank" class="planet" style="--p-size:70px; --grad1:#b49f7c; --grad2:#6f4f27;">
-                KundiZA Hub <span class="project-tag">IBM · frontend</span>
-            </a>
-        </div>
-
-        <!-- outer extras (profile link) -->
-        <div class="orbit" style="--orbit-w:890px; --period:53s;">
-            <a href="https://github.com/Nator26-NT" target="_blank" class="planet" style="--p-size:52px; --grad1:#b09a88; --grad2:#5f4230;">
-                more <i class="fab fa-github"></i> <span class="project-tag">profile</span>
-            </a>
+    <!-- Name header with Tailwind styling -->
+    <div id="info-panel" class="bg-black/50 backdrop-blur-md rounded-2xl border border-amber-500/30 p-6 shadow-2xl">
+        <h1 class="text-5xl font-light bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400 bg-clip-text text-transparent">NANDO THUMBU</h1>
+        <p class="text-amber-200/80 text-lg mt-2 flex items-center gap-3">
+            <i class="fas fa-code text-amber-400"></i> developer · cloud · ai
+            <i class="fas fa-cloud-sun text-amber-400 ml-2"></i>
+        </p>
+        <div class="flex gap-3 mt-4 text-sm">
+            <span class="px-3 py-1 bg-amber-500/20 rounded-full border border-amber-500/40"><i class="fas fa-certificate mr-1 text-amber-400"></i> AZ-900</span>
+            <span class="px-3 py-1 bg-amber-500/20 rounded-full border border-amber-500/40"><i class="fas fa-certificate mr-1 text-amber-400"></i> IBM Data Science</span>
+            <span class="px-3 py-1 bg-amber-500/20 rounded-full border border-amber-500/40"><i class="fas fa-microchip mr-1 text-amber-400"></i> CAIP</span>
         </div>
     </div>
 
-    <!-- minimal certification row (no work experience) -->
-    <div class="certs">
-        <span><i class="fas fa-certificate"></i> AZ-900 Azure</span>
-        <span><i class="fas fa-certificate"></i> IBM Data Science</span>
-        <span><i class="fas fa-microchip"></i> CAIP · AI</span>
-        <span><i class="fas fa-shield-alt"></i> CompTIA A+</span>
+    <!-- GitHub profile link -->
+    <div id="github-link" class="bg-black/50 backdrop-blur-md rounded-full border border-amber-500/30 p-3 shadow-2xl">
+        <a href="https://github.com/Nator26-NT" target="_blank" class="text-amber-400 hover:text-amber-300 transition-colors text-2xl">
+            <i class="fab fa-github"></i>
+        </a>
     </div>
 
-    <!-- footer with rotation hint -->
-    <div style="text-align: center; margin: 2.5rem 0 0.5rem; color:#8b825d; font-size:0.85rem;">
-        <i class="fas fa-sync-alt"></i> each planet rotates at its own speed · hover to pause · click to visit repository
-    </div>
-</div>
+    <!-- Container for Three.js canvas -->
+    <div id="canvas-container" class="fixed inset-0"></div>
 
-<script>
-    console.log('🌞 NANDO THUMBU · solar system portfolio (work experience removed)');
-</script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+
+        // --- Setup Scene, Camera, Renderers ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050510);
+        
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 10, 25);
+        camera.lookAt(0, 0, 0);
+
+        // WebGL Renderer
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // CSS2 Renderer for labels
+        const labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0px';
+        labelRenderer.domElement.style.left = '0px';
+        labelRenderer.domElement.style.pointerEvents = 'none'; // Container has no pointer events, but children will
+        document.getElementById('canvas-container').appendChild(labelRenderer.domElement);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 0.8;
+        controls.enableZoom = true;
+        controls.maxPolarAngle = Math.PI / 2;
+        controls.minDistance = 10;
+        controls.maxDistance = 50;
+
+        // --- Lighting ---
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+
+        // Sun light
+        const sunLight = new THREE.PointLight(0xffaa55, 2, 50);
+        sunLight.position.set(0, 0, 0);
+        scene.add(sunLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(5, 10, 7);
+        dirLight.castShadow = true;
+        dirLight.receiveShadow = true;
+        scene.add(dirLight);
+
+        const fillLight = new THREE.PointLight(0x4466aa, 0.5);
+        fillLight.position.set(0, -5, 5);
+        scene.add(fillLight);
+
+        // --- Stars background ---
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 3000;
+        const starsPositions = new Float32Array(starsCount * 3);
+        for (let i = 0; i < starsCount * 3; i += 3) {
+            starsPositions[i] = (Math.random() - 0.5) * 200;
+            starsPositions[i+1] = (Math.random() - 0.5) * 200;
+            starsPositions[i+2] = (Math.random() - 0.5) * 200;
+        }
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+        const starsMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.2, transparent: true });
+        const stars = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(stars);
+
+        // --- Central Sun ---
+        const sunGeometry = new THREE.SphereGeometry(2.2, 64, 64);
+        const sunMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffaa33,
+            emissive: 0xff5500,
+            roughness: 0.3,
+            metalness: 0.1
+        });
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        sun.castShadow = true;
+        sun.receiveShadow = true;
+        scene.add(sun);
+
+        // Sun glow
+        const glowGeometry = new THREE.SphereGeometry(2.5, 32, 32);
+        const glowMaterial = new THREE.MeshBasicMaterial({
+            color: 0xff8822,
+            transparent: true,
+            opacity: 0.2
+        });
+        const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+        scene.add(glow);
+
+        // Sun label (non-clickable)
+        const sunLabelDiv = document.createElement('div');
+        sunLabelDiv.className = 'planet-label bg-gradient-to-r from-amber-600 to-orange-600 border-amber-300 text-white font-bold px-4 py-2 text-lg';
+        sunLabelDiv.innerHTML = '<i class="fas fa-sun mr-2"></i>NANDO THUMBU';
+        sunLabelDiv.style.cursor = 'default';
+        sunLabelDiv.onclick = null; // No click action
+        const sunLabel = new CSS2DObject(sunLabelDiv);
+        sunLabel.position.set(0, 3, 0);
+        sun.add(sunLabel);
+
+        // --- Project Data with working links ---
+        const projects = [
+            { name: 'Gov_app', url: 'https://github.com/Nator26-NT/Gov_app', color: 0x3a6ea5, size: 0.6, orbit: 4.5, speed: 0.015, tech: 'HTML' },
+            { name: 'Signal-Gen', url: 'https://github.com/Nator26-NT/Signal-Gen', color: 0xc47e3a, size: 0.55, orbit: 5.2, speed: 0.013, tech: 'Python' },
+            { name: 'Gold-Scalping', url: 'https://github.com/Nator26-NT/Gold-Scalping-AI-Pro', color: 0xd4af37, size: 0.65, orbit: 6.5, speed: 0.011, tech: 'AI' },
+            { name: 'ForZarAi', url: 'https://github.com/Nator26-NT/ForZarAi', color: 0x6a4e9b, size: 0.7, orbit: 7.5, speed: 0.009, tech: 'LLM' },
+            { name: 'Forex AI', url: 'https://github.com/Nator26-NT/Forex-trades_AI-tool', color: 0x2e8b57, size: 0.65, orbit: 8.5, speed: 0.008, tech: 'Python' },
+            { name: 'Football Predictor', url: 'https://github.com/Nator26-NT/African-Football-Predictor-Pro-2025', color: 0xcd5c5c, size: 0.75, orbit: 9.5, speed: 0.007, tech: 'ML' },
+            { name: 'IBM Consulting', url: 'https://github.com/Nator26-NT/IBM_Consulting_Page', color: 0x4682b4, size: 0.7, orbit: 10.5, speed: 0.006, tech: 'HTML' },
+            { name: 'Ubuntu Code', url: 'https://github.com/Nator26-NT/Ubuntu_Code_App', color: 0x8b4513, size: 0.8, orbit: 11.5, speed: 0.0055, tech: 'Python' },
+            { name: 'Eskom vs Economy', url: 'https://github.com/Nator26-NT/Eskom_VS_Economy', color: 0x556b2f, size: 0.7, orbit: 12.5, speed: 0.005, tech: 'Python' },
+            { name: 'SpaceX Falcon9', url: 'https://github.com/Nator26-NT/SpaceX-Falcon9-First-Stage-Landing-Prediction', color: 0x708090, size: 0.75, orbit: 13.5, speed: 0.0045, tech: 'Jupyter' },
+            { name: 'Face Detector', url: 'https://github.com/Nator26-NT/Face_Detector', color: 0x9acd32, size: 0.6, orbit: 14.5, speed: 0.004, tech: 'OpenCV' },
+            { name: 'headsoccer', url: 'https://github.com/Nator26-NT/headsoccer', color: 0xff6347, size: 0.65, orbit: 15.5, speed: 0.0035, tech: 'Game' },
+            { name: 'Task Manager', url: 'https://github.com/Nator26-NT/Task_Manager', color: 0x20b2aa, size: 0.6, orbit: 16.5, speed: 0.003, tech: 'JS' },
+            { name: 'KundiZA Hub', url: 'https://github.com/Nator26-NT/KundiZA_Hub', color: 0xba55d3, size: 0.75, orbit: 17.5, speed: 0.0025, tech: 'Frontend' }
+        ];
+
+        // Store planet meshes with their data for animation
+        const planets = [];
+
+        // Create orbit rings and planets
+        projects.forEach(proj => {
+            // Create visible orbit ring
+            const points = [];
+            const radius = proj.orbit;
+            for (let i = 0; i <= 64; i++) {
+                const angle = (i / 64) * Math.PI * 2;
+                points.push(new THREE.Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius));
+            }
+            const ringGeometry = new THREE.BufferGeometry().setFromPoints(points);
+            const ringMaterial = new THREE.LineBasicMaterial({ color: 0x88aaff, transparent: true, opacity: 0.15 });
+            const ring = new THREE.LineLoop(ringGeometry, ringMaterial);
+            scene.add(ring);
+
+            // Planet sphere
+            const geometry = new THREE.SphereGeometry(proj.size, 32, 32);
+            const material = new THREE.MeshStandardMaterial({
+                color: proj.color,
+                emissive: new THREE.Color(proj.color).multiplyScalar(0.2),
+                roughness: 0.4,
+                metalness: 0.1
+            });
+            const planet = new THREE.Mesh(geometry, material);
+            planet.castShadow = true;
+            planet.receiveShadow = true;
+            
+            // Random initial position
+            const initAngle = Math.random() * Math.PI * 2;
+            planet.position.x = Math.cos(initAngle) * proj.orbit;
+            planet.position.z = Math.sin(initAngle) * proj.orbit;
+            
+            scene.add(planet);
+
+            // Create clickable label with working link
+            const labelDiv = document.createElement('div');
+            labelDiv.className = 'planet-label';
+            labelDiv.innerHTML = `<i class="fab fa-github"></i>${proj.name}<span class="ml-2 text-xs opacity-75">${proj.tech}</span>`;
+            
+            // Add click handler directly to the div
+            labelDiv.addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.open(proj.url, '_blank');
+            });
+            
+            const label = new CSS2DObject(labelDiv);
+            label.position.set(0, proj.size + 1.0, 0);
+            planet.add(label);
+
+            // Store planet data
+            planets.push({
+                mesh: planet,
+                radius: proj.orbit,
+                speed: proj.speed,
+                angle: initAngle
+            });
+        });
+
+        // Add asteroid belt
+        const asteroidGeo = new THREE.BufferGeometry();
+        const asteroidCount = 400;
+        const asteroidPos = new Float32Array(asteroidCount * 3);
+        for (let i = 0; i < asteroidCount; i++) {
+            const r = 7 + Math.random() * 2;
+            const theta = Math.random() * Math.PI * 2;
+            const y = (Math.random() - 0.5) * 1.5;
+            asteroidPos[i*3] = Math.cos(theta) * r;
+            asteroidPos[i*3+1] = y;
+            asteroidPos[i*3+2] = Math.sin(theta) * r;
+        }
+        asteroidGeo.setAttribute('position', new THREE.BufferAttribute(asteroidPos, 3));
+        const asteroidMat = new THREE.PointsMaterial({ color: 0xccaa88, size: 0.1 });
+        const asteroids = new THREE.Points(asteroidGeo, asteroidMat);
+        scene.add(asteroids);
+
+        // Fog
+        scene.fog = new THREE.FogExp2(0x050510, 0.002);
+
+        // --- Animation Loop ---
+        let clock = new THREE.Clock();
+
+        function animate() {
+            const delta = clock.getDelta();
+            
+            // Rotate planets
+            planets.forEach(p => {
+                p.angle += p.speed * delta * 3;
+                p.mesh.position.x = Math.cos(p.angle) * p.radius;
+                p.mesh.position.z = Math.sin(p.angle) * p.radius;
+                p.mesh.rotation.y += 0.01;
+            });
+
+            // Rotate stars
+            stars.rotation.y += 0.0001;
+
+            controls.update();
+            
+            renderer.render(scene, camera);
+            labelRenderer.render(scene, camera);
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        console.log('✅ 3D Solar System ready - Click any planet label to open GitHub repo');
+    </script>
 </body>
 </html>
