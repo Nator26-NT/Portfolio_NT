@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NANDO THUMBU · 3D SOLAR PORTFOLIO</title>
+    <title>NTANDO THUMBU · 3D SOLAR PORTFOLIO</title>
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
@@ -57,10 +57,6 @@
             transform: translate(-50%, -50%) scale(1.1);
             border-color: white;
         }
-        .planet-label i {
-            margin-right: 6px;
-            color: #fbbf24;
-        }
         .planet-label:hover i {
             color: black;
         }
@@ -75,9 +71,9 @@
 </head>
 <body class="bg-black text-white">
 
-    <!-- Name header with Tailwind styling -->
+    <!-- Name header with Tailwind styling - CORRECTED to NTANDO -->
     <div id="info-panel" class="bg-black/50 backdrop-blur-md rounded-2xl border border-amber-500/30 p-6 shadow-2xl">
-        <h1 class="text-5xl font-light bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400 bg-clip-text text-transparent">NANDO THUMBU</h1>
+        <h1 class="text-5xl font-light bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400 bg-clip-text text-transparent">NTANDO THUMBU</h1>
         <p class="text-amber-200/80 text-lg mt-2 flex items-center gap-3">
             <i class="fas fa-code text-amber-400"></i> developer · cloud · ai
             <i class="fas fa-cloud-sun text-amber-400 ml-2"></i>
@@ -126,7 +122,7 @@
         labelRenderer.domElement.style.position = 'absolute';
         labelRenderer.domElement.style.top = '0px';
         labelRenderer.domElement.style.left = '0px';
-        labelRenderer.domElement.style.pointerEvents = 'none'; // Container has no pointer events, but children will
+        labelRenderer.domElement.style.pointerEvents = 'none';
         document.getElementById('canvas-container').appendChild(labelRenderer.domElement);
 
         // Controls
@@ -196,12 +192,12 @@
         const glow = new THREE.Mesh(glowGeometry, glowMaterial);
         scene.add(glow);
 
-        // Sun label (non-clickable)
+        // Sun label with CORRECTED name
         const sunLabelDiv = document.createElement('div');
         sunLabelDiv.className = 'planet-label bg-gradient-to-r from-amber-600 to-orange-600 border-amber-300 text-white font-bold px-4 py-2 text-lg';
-        sunLabelDiv.innerHTML = '<i class="fas fa-sun mr-2"></i>NANDO THUMBU';
+        sunLabelDiv.innerHTML = '<i class="fas fa-sun mr-2"></i>NTANDO THUMBU';
         sunLabelDiv.style.cursor = 'default';
-        sunLabelDiv.onclick = null; // No click action
+        sunLabelDiv.onclick = null;
         const sunLabel = new CSS2DObject(sunLabelDiv);
         sunLabel.position.set(0, 3, 0);
         sun.add(sunLabel);
