@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NANDO THUMBU · SOLAR PORTFOLIO</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 30% 40%, #0a1025, #010205);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #f0ecdb;
+            padding: 1rem;
+        }
+
+        /* starfield animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48Y2lyY2xlIGN4PSI2MCIgY3k9IjcwIiByPSIxLjIiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSIxNTAiIGN5PSIyMjAiIHI9IjEuNyIgZmlsbD0iI2ZmZmZmZiIvPjxjaXJjbGUgY3g9IjI4MCIgY3k9IjUwIiByPSIxLjgiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI0MDAiIGN5PSIzMjAiIHI9IjEiIGZpbGw9IiNmZmZmZmYiLz48L3N2Zz4=') repeat;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+            animation: drift 200s linear infinite;
+        }
+        @keyframes drift {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-400px) translateX(150px); }
+        }
+
+        .wrapper {
+            max-width: 1500px;
+            width: 100%;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* header with full name */
+        .name-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            background: rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(8px);
+            border-radius: 100px 20px 100px 20px;
+            padding: 1.5rem 2rem;
+            border: 1px solid #c9a55c;
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .name-header h1 {
+            font-size: 3.8rem;
+            font-weight: 350;
+            background: linear-gradient(135deg, #feda85, #f3b377, #d6b4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px #ffb347;
+        }
+        .name-header p {
+            font-size: 1.3rem;
+            color: #d4cbad;
+            letter-spacing: 3px;
+        }
+
+        /* solar system container */
+        .solar-system {
+            position: relative;
+            width: 100%;
+            min-height: 950px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0 2rem;
+        }
+
+        /* central sun = name + title (no work) */
+        .sun {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle at 30% 30%, #fee186, #ea7e2e, #b9520c);
+            border-radius: 50%;
+            box-shadow: 0 0 100px 40px #ffa94b, 0 0 210px 80px #ff7d2a;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid #ffcf86;
+            z-index: 50;
+            color: #201e12;
+            font-weight: bold;
+            padding: 0 10px;
+            text-align: center;
+            animation: glow 4s infinite alternate;
+        }
+        .sun i {
+            font-size: 4rem;
+            color: #fff3cf;
+            filter: drop-shadow(0 0 8px black);
+        }
+        .sun .full-name {
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(4px);
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            color: #ffefcb;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 8px;
+            border: 1px solid #f0b56c;
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 90px 30px #fea53b, 0 0 170px 60px #fc7a1e; }
+            100% { box-shadow: 0 0 150px 55px #ffc97a, 0 0 260px 100px #ffaa33; }
+        }
+
+        /* orbit rings (visual only) */
+        .ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(190, 155, 90, 0.3);
+            border-radius: 50%;
+            width: var(--d);
+            height: var(--d);
+            box-shadow: 0 0 0 1px rgba(210, 175, 100, 0.2);
+            pointer-events: none;
+        }
+
+        /* rotating orbit */
+        .orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: var(--orbit-w);
+            height: var(--orbit-w);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotateOrbit var(--period) linear infinite;
+            pointer-events: none;
+        }
+
+        .planet {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--p-size);
+            height: var(--p-size);
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--grad1), var(--grad2));
+            box-shadow: 0 0 25px 6px rgba(230, 200, 120, 0.7), 0 0 0 2px rgba(255, 215, 120, 0.5) inset;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-shadow: 0 2px 6px black;
+            padding: 0 2px;
+            border: 2px solid #e7b75e;
+            transition: 0.2s;
+            pointer-events: auto;
+            line-height: 1.2;
+            text-align: center;
+            word-break: break-word;
+            backdrop-filter: blur(2px);
+        }
+
+        .planet:hover {
+            transform: translate(-50%, -50%) scale(1.3);
+            box-shadow: 0 0 55px 18px #ffeec0;
+            border: 2px solid #fff2bb;
+            z-index: 400;
+        }
+
+        .orbit:has(.planet:hover) {
+            animation-play-state: paused;
+        }
+
+        @keyframes rotateOrbit {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .project-tag {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0b1022ee;
+            backdrop-filter: blur(4px);
+            white-space: nowrap;
+            font-size: 0.55rem;
+            padding: 3px 10px;
+            border-radius: 40px;
+            color: #ffda94;
+            border: 1px solid #b99450;
+            opacity: 0.95;
+            pointer-events: none;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        /* minimal cert strip (no work experience) */
+        .certs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            color: #cfc69b;
+        }
+        .certs span {
+            background: #151f2e;
+            padding: 0.4rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid #9e884b;
+            font-size: 0.9rem;
+        }
+
+        /* responsive */
+        @media (max-width: 1000px) {
+            .solar-system { transform: scale(0.8); }
+            .name-header h1 { font-size: 2.8rem; }
+        }
+        @media (max-width: 700px) {
+            .solar-system { transform: scale(0.65); }
+        }
+    </style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrapper">
+
+    <!-- NAME + SURNAME (prominent) - no work details -->
+    <div class="name-header">
+        <h1>NANDO THUMBU</h1>
+        <p><i class="fas fa-code"></i>  developer · cloud · ai  <i class="fas fa-cloud-sun"></i></p>
+    </div>
+
+    <!-- SOLAR SYSTEM (planets = all your github projects) -->
+    <div class="solar-system">
+        <!-- decorative rings -->
+        <div class="ring" style="--d:210px;"></div>
+        <div class="ring" style="--d:350px;"></div>
+        <div class="ring" style="--d:490px;"></div>
+        <div class="ring" style="--d:630px;"></div>
+        <div class="ring" style="--d:770px;"></div>
+        <div class="ring" style="--d:890px;"></div>
+
+        <!-- SUN with name (central) -->
+        <div class="sun">
+            <i class="fas fa-user-astronaut"></i>
+            <span class="full-name">N. THUMBU</span>
+        </div>
+
+        <!-- ===== PROJECT PLANETS (each linked to github) ===== -->
+        <!-- inner belt -->
+        <div class="orbit" style="--orbit-w:210px; --period:12s;">
+            <a href="https://github.com/Nator26-NT/Gov_app" target="_blank" class="planet" style="--p-size:46px; --grad1:#79a3c2; --grad2:#163d60;">
+                Gov_app <span class="project-tag"><i class="fab fa-html5"></i> HTML</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:210px; --period:14s;">
+            <a href="https://github.com/Nator26-NT/Signal-Gen" target="_blank" class="planet" style="--p-size:44px; --grad1:#c49764; --grad2:#79461f;">
+                Signal‑Gen <span class="project-tag"><i class="fab fa-python"></i> Python</span>
+            </a>
+        </div>
+
+        <!-- 350px orbit -->
+        <div class="orbit" style="--orbit-w:350px; --period:19s;">
+            <a href="https://github.com/Nator26-NT/Gold-Scalping-AI-Pro" target="_blank" class="planet" style="--p-size:62px; --grad1:#dbb277; --grad2:#9f601f;">
+                Gold‑Scalping <span class="project-tag">AI · Python</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:350px; --period:21s;">
+            <a href="https://github.com/Nator26-NT/ForZarAi" target="_blank" class="planet" style="--p-size:64px; --grad1:#9fa9c9; --grad2:#2c3a5e;">
+                ForZarAi <span class="project-tag"><i class="fas fa-brain"></i> LLM</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:350px; --period:23s;">
+            <a href="https://github.com/Nator26-NT/Forex-trades_AI-tool" target="_blank" class="planet" style="--p-size:60px; --grad1:#ba987a; --grad2:#6d4029;">
+                Forex AI tool <span class="project-tag">V3 · Python</span>
+            </a>
+        </div>
+
+        <!-- 490px orbit -->
+        <div class="orbit" style="--orbit-w:490px; --period:27s;">
+            <a href="https://github.com/Nator26-NT/African-Football-Predictor-Pro-2025" target="_blank" class="planet" style="--p-size:70px; --grad1:#a2aa7f; --grad2:#3d6130;">
+                Football predictor <span class="project-tag">2025 · ML</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:490px; --period:29s;">
+            <a href="https://github.com/Nator26-NT/IBM_Consulting_Page" target="_blank" class="planet" style="--p-size:66px; --grad1:#9f8d78; --grad2:#5d432b;">
+                IBM Consulting <span class="project-tag">HTML · page</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:490px; --period:31s;">
+            <a href="https://github.com/Nator26-NT/Ubuntu_Code_App" target="_blank" class="planet" style="--p-size:80px; --grad1:#b9ab86; --grad2:#5a4e2a;">
+                Ubuntu Code <span class="project-tag">Python · i18n</span>
+            </a>
+        </div>
+
+        <!-- 630px orbit -->
+        <div class="orbit" style="--orbit-w:630px; --period:35s;">
+            <a href="https://github.com/Nator26-NT/Eskom_VS_Economy" target="_blank" class="planet" style="--p-size:64px; --grad1:#7e9b9c; --grad2:#1f5258;">
+                Eskom vs Economy <span class="project-tag">Python</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:630px; --period:37s;">
+            <a href="https://github.com/Nator26-NT/SpaceX-Falcon9-First-Stage-Landing-Prediction" target="_blank" class="planet" style="--p-size:70px; --grad1:#bd8f68; --grad2:#794520;">
+                SpaceX‑Falcon9 <span class="project-tag">Jupyter</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:630px; --period:39s;">
+            <a href="https://github.com/Nator26-NT/Face_Detector" target="_blank" class="planet" style="--p-size:58px; --grad1:#ac8b78; --grad2:#613e27;">
+                Face Detector <span class="project-tag">Python · CV</span>
+            </a>
+        </div>
+
+        <!-- 770px orbit -->
+        <div class="orbit" style="--orbit-w:770px; --period:44s;">
+            <a href="https://github.com/Nator26-NT/headsoccer" target="_blank" class="planet" style="--p-size:64px; --grad1:#9fb18b; --grad2:#38612f;">
+                headsoccer <span class="project-tag">Python · game</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:770px; --period:46s;">
+            <a href="https://github.com/Nator26-NT/Task_Manager" target="_blank" class="planet" style="--p-size:60px; --grad1:#8b9ca9; --grad2:#27465b;">
+                Task Manager <span class="project-tag">JavaScript</span>
+            </a>
+        </div>
+        <div class="orbit" style="--orbit-w:770px; --period:48s;">
+            <a href="https://github.com/Nator26-NT/KundiZA_Hub" target="_blank" class="planet" style="--p-size:70px; --grad1:#b49f7c; --grad2:#6f4f27;">
+                KundiZA Hub <span class="project-tag">IBM · frontend</span>
+            </a>
+        </div>
+
+        <!-- outer extras (profile link) -->
+        <div class="orbit" style="--orbit-w:890px; --period:53s;">
+            <a href="https://github.com/Nator26-NT" target="_blank" class="planet" style="--p-size:52px; --grad1:#b09a88; --grad2:#5f4230;">
+                more <i class="fab fa-github"></i> <span class="project-tag">profile</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- minimal certification row (no work experience) -->
+    <div class="certs">
+        <span><i class="fas fa-certificate"></i> AZ-900 Azure</span>
+        <span><i class="fas fa-certificate"></i> IBM Data Science</span>
+        <span><i class="fas fa-microchip"></i> CAIP · AI</span>
+        <span><i class="fas fa-shield-alt"></i> CompTIA A+</span>
+    </div>
+
+    <!-- footer with rotation hint -->
+    <div style="text-align: center; margin: 2.5rem 0 0.5rem; color:#8b825d; font-size:0.85rem;">
+        <i class="fas fa-sync-alt"></i> each planet rotates at its own speed · hover to pause · click to visit repository
+    </div>
+</div>
+
+<script>
+    console.log('🌞 NANDO THUMBU · solar system portfolio (work experience removed)');
+</script>
+</body>
+</html>
